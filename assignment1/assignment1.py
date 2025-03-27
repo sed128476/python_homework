@@ -1,14 +1,16 @@
+
 # Write your code here.
 print("--------------Task1-----------------------------------")
-def greetTask1():
-    print("Hello")
+def hello():
+    return f"Hello!" 
     
-greetTask1()
+print(hello())
+
 print("------------------------Task2--------------------")
-def greetTask2(name):
-    print("Hello," + name + "!")
+def greet(name):
+    return f"Hello, {name}!" 
   
-greetTask2("katty")
+print(greet("katty"))
 
 print("-------------------------------Task3----------------------------------------")
 def calc(a, b, operation="multiply"):
@@ -33,7 +35,7 @@ def calc(a, b, operation="multiply"):
     except ZeroDivisionError:
         return "You can't divide by 0!"
     except TypeError:
-        return f"You can't {operation.upper()} those values!"
+        return f"You can't {operation} those values!"
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
@@ -54,23 +56,18 @@ print("-------------------Task 4-------------------")
 def data_type_conversion(value, target_type):
     try:
         target_type = target_type.lower()
-        print(f"Original value: {value} (type: {type(value).__name__})")
         if target_type == "float":
-            result = float(value)
-            print(f"Converted to: {result} (type: {type(result).__name__})")
-            return result
+            return float(value)
         elif target_type == "str":
-            result = str(value)
-            print(f"Converted to: {result} (type: {type(result).__name__})")
-            return result
+            return str(value)
         elif target_type == "int":
-            result = int(value)
-            print(f"Converted to: {result} (type: {type(result).__name__})")
-            return result
+            return int(value)
         else:
             return "Invalid type. Use 'float', 'str', or 'int'"
     except (ValueError, TypeError):
-        return f"You can't convert {value} into a {target_type.upper()}"
+        return f"You can't convert {value} into a {target_type}."
+
+
 
 # Test cases
 print("\nTest 1:")
@@ -85,6 +82,7 @@ print("\nTest 5:")
 print(data_type_conversion("abc", "float"))
 
 print("-------------------Task 5-------------------")
+
 def grade(*args):
     try:
         if not args:  # Check if any arguments were provided
@@ -95,18 +93,19 @@ def grade(*args):
         
         # Determine letter grade
         if average >= 90:
-            return f"A (Average: {average})"
+            return "A"
         elif average >= 80:
-            return f"B (Average: {average})"
+            return "B"
         elif average >= 70:
-            return f"C (Average: {average})"
+            return "C"
         elif average >= 60:
-           return f"D (Average: {average})"
+            return "D"
         else:
-            return f"F (Average: {average})"
+            return "F"
             
     except (TypeError, ValueError):
         return "Invalid data was provided."
+
 
 # Test cases
 print("\nGrade Tests:")
@@ -257,7 +256,6 @@ print(hangman("UPPER", "per"))          # Secret length: 5, Guess length: 3
 print(hangman(123, "abc"))              # Error message
 
 print("-------------------Task 10-------------------")
-
 def pig_latin(text):
     try:
         # Convert to lowercase and split into words
@@ -269,32 +267,36 @@ def pig_latin(text):
             if not word:  # Skip empty strings
                 continue
                 
-            # Rule 1: If word starts with vowel
+            # Rule 1: If the word starts with a vowel
             if word[0] in vowels:
                 result.append(word + "ay")
                 
             # Rule 2 & 3: Handle consonants and 'qu' special case
             else:
-                # Handle 'qu' special case
-                if word.startswith('qu'):
-                    result.append(word[2:] + 'quay')
-                elif len(word) > 2 and word[1] == 'u' and word[0] != 'q':
-                    # Handle consonant + u case (but not qu)
-                    result.append(word[1:] + word[0] + 'ay')
+                # Handle 'qu' special case, whether at the beginning or within a consonant cluster
+                if 'qu' in word:
+                    qu_index = word.index('qu')
+                    result.append(word[qu_index + 2:] + word[:qu_index + 2] + 'ay')
                 else:
                     # Find the index of the first vowel
-                    vowel_index = 0
+                    vowel_index = -1
                     for i, char in enumerate(word):
                         if char in vowels:
                             vowel_index = i
                             break
-                    # Move consonants to end and add 'ay'
-                    result.append(word[vowel_index:] + word[:vowel_index] + 'ay')
+                    
+                    # If no vowels are found (rare case)
+                    if vowel_index == -1:
+                        result.append(word + "ay")
+                    else:
+                        # Move consonants to end and add 'ay'
+                        result.append(word[vowel_index:] + word[:vowel_index] + 'ay')
                     
         return " ".join(result)
         
     except AttributeError:
         return "Invalid input: Input must be a string"
+
 
 # Test cases
 print("\nPig Latin Tests:")
@@ -308,39 +310,3 @@ print(pig_latin(""))                 # empty string
 print(pig_latin("eat pie"))          # eatay iepay
 print(pig_latin("string"))           # ingstray
 print(pig_latin(123))                # Invalid input message
-
-print("-------------------Task 11-------------------")
-"""
-def pig_latin(sentence):
-    vowels = "aeiou"
-    words = sentence.split()  # Split the input sentence into words
-    pig_latin_words = []
-    
-    for word in words:
-        if word[0] in vowels:
-            # Rule (1): If the word starts with a vowel
-            pig_latin_words.append(word + "ay")
-        elif word[:2] == "qu":
-            # Rule (3): Special case for "qu"
-            pig_latin_words.append(word[2:] + "quay")
-        else:
-            # Rule (2): Move leading consonants to the end
-            for i, char in enumerate(word):
-                if char in vowels:
-                    pig_latin_words.append(word[i:] + word[:i] + "ay")
-                    break
-            else:
-                # If there are no vowels in the word
-                pig_latin_words.append(word + "ay")
-    
-    return " ".join(pig_latin_words)
-
-# Example usage:
-print(pig_latin("this is a test"))  # Output: "isthay isay aay esttay"
-print(pig_latin("quick brown fox jumps over the lazy dog"))  # Output: "ickquay ownbray oxfay umpsjay overay ethay azylay ogday"
-print(pig_latin("apple and orange"))  # Output: "appleay anday orangeay"
-
-
-
-
-"""
