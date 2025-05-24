@@ -1,0 +1,9 @@
+Challenges faced:
+- Identifying the correct XPath for extracting vulnerabilities.
+- Ensuring Selenium WebDriver is properly installed and configured.
+- Handling dynamic content loading on the webpage.
+
+Resolution:
+- Used browser developer tools to inspect elements and determine XPath.
+- Installed the latest Chrome WebDriver and ensured compatibility.
+- Implemented explicit waits if needed for dynamic content.
